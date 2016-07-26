@@ -6,4 +6,4 @@ gem 'thin'
 
 gem 'mechanize'
 
-gem 'csv'
+gem 'httparty'

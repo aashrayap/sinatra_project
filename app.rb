@@ -8,7 +8,7 @@ end
 
 post '/result_page' do
   keyword = params[:jobsearch]
-  scraper = Scraper.new(keyword)
+  scraper = Scraper.new(keyword,location)
   results = scraper.return_job_array
   erb :result_page, :locals => {:results => results}
 end 

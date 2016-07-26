@@ -1,4 +1,7 @@
 <% results.each do |job| %>
- Job Title :  <%=job.title%> <br>
- Company: <%=job.company%> <br><br>
+
+  <h2>Job title: <%=job.title%></h2>
+  Company: <%=job.company%><br>
+  Link: <%=job.link.uri.to_s%><br>
+  Location: <%=job.location%><br><br>
   <%end%>

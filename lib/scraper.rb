@@ -1,12 +1,13 @@
 require 'mechanize'
 require 'pry'
 require 'csv'
+require_relative 'locator'
 
-Job=Struct.new(:title,:company,:link)
+Job=Struct.new(:title,:company,:link,:location)
 
 class Scraper
 
-  def initialize(keyword)
+  def initialize(keyword,city=nil)
     @jobarray=[]
 
     scraper= Mechanize.new
@@ -16,20 +17,27 @@ class Scraper
     result=page.form_with(:id=>'search-form')
     result.q=keyword
 
-    page = scraper.submit(result)
+    if city==nil
+    locator=Locator.new
+    city=locator.location["city"]
+    end
 
-    page.links_with(:href => /detail/).each do |link|
+    result.l=city
+    result_page = scraper.submit(result)
 
-     if @jobarray.size >3
+    result_page.links_with(:href => /detail/).each do |link|
+
+     if @jobarray.size >1
         break
       else
       current_job=Job.new
       current_job.title=link.text.strip
 
-      description_page=link.click
-      holder =description_page.link_with(:href => /company/) 
+      description_result_page=link.click
+      holder =description_result_page.link_with(:href => /company/) 
       current_job.company=holder.text
       current_job.link=link
+      current_job.location = description_result_page.search("li.location").text
       @jobarray<<current_job
       end
     end
@@ -39,3 +47,6 @@ class Scraper
     @jobarray
   end
 end
+
+scraper=Scraper.new('engineer','toronto')
+puts scraper.return_job_array
