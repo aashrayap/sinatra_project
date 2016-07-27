@@ -27,7 +27,7 @@ class Scraper
 
     result_page.links_with(:href => /detail/).each do |link|
 
-     if @jobarray.size >1
+     if @jobarray.size >3
         break
       else
       current_job=Job.new
@@ -48,5 +48,4 @@ class Scraper
   end
 end
 
-scraper=Scraper.new('engineer','toronto')
-puts scraper.return_job_array
+
