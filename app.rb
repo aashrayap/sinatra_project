@@ -26,3 +26,4 @@ post '/result_page' do
   results = scraper.return_job_array
   erb :result_page, :locals => {:results => results}
 end
+
